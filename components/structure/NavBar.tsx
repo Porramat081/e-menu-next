@@ -1,5 +1,5 @@
 import { Menu, Receipt, Search, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MenuBar from "./MenuBar";
 
 export default function NavBar() {
@@ -7,11 +7,36 @@ export default function NavBar() {
   const toggleMenu = () => {
     setOpenMenu((prev) => !prev);
   };
+
+  const divRef = useRef<HTMLDivElement | null>(null);
+  const btnRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleClickOutSide = (event: MouseEvent | TouchEvent) => {
+    if (
+      divRef.current &&
+      !divRef.current.contains(event.target as Node) &&
+      !btnRef.current?.contains(event.target as Node)
+    ) {
+      setOpenMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutSide);
+    document.addEventListener("touchstart", handleClickOutSide);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutSide);
+      document.removeEventListener("touchstart", handleClickOutSide);
+    };
+  }, [divRef, handleClickOutSide]);
+
   return (
     <div className="relative">
       <nav className="flex py-2 px-1 items-center justify-between sm:justify-around">
         <div className="sm:hidden block">
           <button
+            ref={btnRef}
             onClick={toggleMenu}
             className="block cursor-pointer outline-0"
             title="menu"
@@ -45,6 +70,7 @@ export default function NavBar() {
       </nav>
 
       <div
+        ref={divRef}
         className={`sm:hidden block absolute z-10 transition-all duration-500 ${
           !openMenu ? "-translate-x-full" : "translate-x-full/2"
         }`}
