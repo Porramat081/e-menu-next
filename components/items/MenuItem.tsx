@@ -1,23 +1,56 @@
-import { MenuItemType } from "@/interfaces/Menu";
+import { CartItemType, MenuItemType } from "@/interfaces/Menu";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useCart, { DirectionQty } from "@/stores/cart";
 
 export default function MenuItem(props: MenuItemType) {
   const [num, setNum] = useState<number>(0);
+  const { updateQty, removeCartItem, cartItems } = useCart();
+
+  const isExist = () => {
+    const selectedItem = cartItems.find((item) => item.id === props.id);
+    if (selectedItem) {
+      setNum(selectedItem.qty);
+    }
+  };
 
   const handlePlus = () => {
     setNum((prev) => prev + 1);
+    const cartUpdate: CartItemType = {
+      id: props.id,
+      title: props.name,
+      unitPrice: props.price,
+      qty: 1,
+    };
+    updateQty(cartUpdate, 1, DirectionQty.Plus);
   };
 
   const handleMinus = () => {
     setNum((prev) => {
       if (prev > 0) {
+        if (prev - 1 === 0) {
+          removeCartItem(props.id);
+        } else {
+          const cartUpdate: CartItemType = {
+            id: props.id,
+            title: props.name,
+            unitPrice: props.price,
+            qty: 1,
+          };
+          updateQty(cartUpdate, 1, DirectionQty.Minus);
+        }
+
         return prev - 1;
       }
       return prev;
     });
   };
+
+  useEffect(() => {
+    isExist();
+  }, []);
+
   return (
     <div className="col-span-1 rounded-2xl overflow-clip bg-gray-300 h-auto w-full aspect-square justify-self-center">
       <div className="w-full h-full p-2 rounded-2xl overflow-clip">

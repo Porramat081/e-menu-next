@@ -51,3 +51,7 @@ input[type="number"] {
 .qty-btn {
   @apply cursor-pointer flex items-center justify-center rounded-full w-7 h-7 sm:w-6 sm:h-6;
 }
+
+.badge {
+  @apply text-xs rounded-full flex justify-center items-center w-0.5 h-0.5 bg-red-400;
+}

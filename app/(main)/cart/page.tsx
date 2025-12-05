@@ -9,11 +9,11 @@ import { useRouter } from "next/navigation";
 const ItemRow = (props: CartItemType) => {
   const { updateQty } = useCart();
   const handlePlus = () => {
-    updateQty(props.id, 1, DirectionQty.Plus);
+    updateQty(props, 1, DirectionQty.Plus);
   };
 
   const handleMinus = () => {
-    updateQty(props.id, 1, DirectionQty.Minus);
+    updateQty(props, 1, DirectionQty.Minus);
   };
   return (
     <tr>

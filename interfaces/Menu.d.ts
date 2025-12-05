@@ -1,4 +1,5 @@
 export interface MenuItemType {
+  id: string;
   imageUrl: string;
   name: string;
   price: number;

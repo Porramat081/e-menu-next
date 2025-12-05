@@ -10,7 +10,7 @@ interface Store {
   cartItems: CartItemType[];
   addCartItem: (newItem: CartItemType) => void;
   removeCartItem: (itemId: string) => void;
-  updateQty: (itemId: string, num: number, dir: DirectionQty) => void;
+  updateQty: (itemInput: CartItemType, num: number, dir: DirectionQty) => void;
   clearCart: () => void;
 }
 
@@ -22,18 +22,23 @@ export default create<Store>()((set) => ({
     set((state) => ({
       cartItems: state.cartItems.filter((item) => item.id !== itemId),
     })),
-  updateQty: (itemId, num, dir) =>
+  updateQty: (itemInput, num, dir) =>
     set((state) => {
       if (dir == "Plus") {
-        return {
-          cartItems: state.cartItems.map((item) =>
-            item.id === itemId ? { ...item, qty: item.qty + num } : item
-          ),
-        };
+        if (state.cartItems.find((item) => item.id === itemInput.id)) {
+          return {
+            cartItems: state.cartItems.map((item) =>
+              item.id === itemInput.id ? { ...item, qty: item.qty + num } : item
+            ),
+          };
+        } else {
+          console.log("add");
+          return { cartItems: [...state.cartItems, itemInput] };
+        }
       } else if (dir == "Minus") {
         return {
           cartItems: state.cartItems.map((item) =>
-            item.id === itemId && item.qty - num >= 0
+            item.id === itemInput.id && item.qty - num >= 0
               ? { ...item, qty: item.qty - num }
               : item
           ),

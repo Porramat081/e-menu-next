@@ -4,6 +4,7 @@ import { Menu, Receipt, Search, ShoppingCart } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import MenuBar from "./MenuBar";
 import { useRouter } from "next/navigation";
+import useCart from "@/stores/cart";
 
 export default function NavBar() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -25,6 +26,12 @@ export default function NavBar() {
   };
 
   const router = useRouter();
+
+  const { cartItems } = useCart();
+
+  const totalQty = () => {
+    return cartItems.reduce((sum, item) => sum + item.qty, 0);
+  };
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutSide);
@@ -65,6 +72,7 @@ export default function NavBar() {
             className="block cursor-pointer"
           >
             <ShoppingCart size={20} />
+            {totalQty() > 0 && <div className="badge">{totalQty()}</div>}
           </button>
           <button className="block cursor-pointer">
             <Receipt size={20} />
