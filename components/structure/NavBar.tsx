@@ -3,6 +3,7 @@
 import { Menu, Receipt, Search, ShoppingCart } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import MenuBar from "./MenuBar";
+import { useRouter } from "next/navigation";
 
 export default function NavBar() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -22,6 +23,8 @@ export default function NavBar() {
       setOpenMenu(false);
     }
   };
+
+  const router = useRouter();
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutSide);
@@ -57,7 +60,10 @@ export default function NavBar() {
           </button>
         </div>
         <div className="flex items-center gap-4">
-          <button className="block cursor-pointer">
+          <button
+            onClick={() => router.push("/cart")}
+            className="block cursor-pointer"
+          >
             <ShoppingCart size={20} />
           </button>
           <button className="block cursor-pointer">

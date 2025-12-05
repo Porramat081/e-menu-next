@@ -40,10 +40,7 @@ export default function MenuItem(props: MenuItemType) {
           </div>
         </div>
         <div className="flex justify-center items-center mt-2 mb-1">
-          <button
-            onClick={handleMinus}
-            className="cursor-pointer flex items-center justify-center rounded-full bg-blue-300 w-7 h-7 sm:w-6 sm:h-6"
-          >
+          <button onClick={handleMinus} className="qty-btn bg-blue-300">
             <Minus size={14} />
           </button>
           <input
@@ -66,10 +63,7 @@ export default function MenuItem(props: MenuItemType) {
             }}
           />
 
-          <button
-            onClick={handlePlus}
-            className="cursor-pointer flex items-center justify-center rounded-full bg-blue-300 w-7 h-7 sm:w-6 sm:h-6"
-          >
+          <button onClick={handlePlus} className="qty-btn bg-blue-300">
             <Plus size={14} />
           </button>
         </div>

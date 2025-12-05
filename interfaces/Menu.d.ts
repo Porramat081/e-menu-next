@@ -3,3 +3,10 @@ export interface MenuItemType {
   name: string;
   price: number;
 }
+
+export interface CartItemType {
+  id: string;
+  title: string;
+  unitPrice: number;
+  qty: number;
+}

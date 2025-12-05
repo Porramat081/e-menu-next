@@ -23,3 +23,31 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+.table {
+  @apply w-full border border-gray-200 rounded-lg overflow-hidden shadow-sm;
+}
+
+.table thead {
+  @apply bg-gray-100;
+}
+
+.table thead tr th {
+  @apply px-4 py-3 text-center text-sm font-semibold text-gray-700;
+}
+
+.table tbody {
+  @apply divide-y divide-gray-200 bg-white;
+}
+
+.table tbody tr td {
+  @apply py-2 text-center text-sm;
+}
+
+.action-btn {
+  @apply cursor-pointer border px-2 py-1 rounded-xl text-center font-semibold text-sm hover:text-white hover:brightness-90 active:brightness-105;
+}
+
+.qty-btn {
+  @apply cursor-pointer flex items-center justify-center rounded-full w-7 h-7 sm:w-6 sm:h-6;
+}

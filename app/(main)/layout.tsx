@@ -1,7 +1,24 @@
+import MenuBar from "@/components/structure/MenuBar";
+import NavBar from "@/components/structure/NavBar";
+
 export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="max-w-[1000px] min-w-[300px] mx-auto">{children}</div>;
+  return (
+    <div className="max-w-[1000px] min-w-[300px] mx-auto">
+      <div className="grid grid-cols-8">
+        <div className="col-span-2 hidden sm:block">
+          <MenuBar isMain />
+        </div>
+        <div className="col-span-8 sm:col-span-6">
+          <div className="flex flex-col">
+            <NavBar />
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
