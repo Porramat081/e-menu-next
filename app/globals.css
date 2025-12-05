@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --swiper-theme-color: white !important;
+}
+
+.swiper-pagination-bullet {
+  padding: 0.3rem;
+}
