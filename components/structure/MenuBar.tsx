@@ -5,7 +5,7 @@ const mock_menu_list = [1, 2, 3, 4, 5];
 
 export default function MenuBar({ isMain }: { isMain?: boolean }) {
   return (
-    <nav className="flex flex-col px-4 py-2 gap-4 bg-gray-500 overflow-x-auto h-full">
+    <nav className="flex flex-col px-4 py-2 gap-4 bg-gray-500 overflow-x-auto min-h-svh">
       <div className="px-2 pt-1">
         <h2 className="font-semibold text-md">Menu</h2>
       </div>

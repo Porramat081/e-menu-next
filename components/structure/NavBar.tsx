@@ -45,7 +45,7 @@ export default function NavBar() {
 
   return (
     <div className="sticky top-0 z-10">
-      <nav className="flex py-2 px-1 items-center justify-between sm:justify-around bg-gray-50">
+      <nav className="flex py-2 px-1 items-center justify-between sm:justify-center sm:gap-4 bg-gray-50">
         <div className="sm:hidden block">
           <button
             ref={btnRef}
@@ -69,12 +69,15 @@ export default function NavBar() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => router.push("/cart")}
-            className="block cursor-pointer"
+            className="block cursor-pointer relative"
           >
             <ShoppingCart size={20} />
             {totalQty() > 0 && <div className="badge">{totalQty()}</div>}
           </button>
-          <button className="block cursor-pointer">
+          <button
+            onClick={() => router.push("/bill")}
+            className="block cursor-pointer"
+          >
             <Receipt size={20} />
           </button>
           <div>

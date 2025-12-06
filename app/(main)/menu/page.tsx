@@ -7,7 +7,7 @@ import { MenuItemType } from "@/interfaces/Menu";
 const mock_item = (num: number) => ({
   imageUrl: "/pic/food1.jpg",
   name: "demo burger",
-  price: 0,
+  price: 200,
   id: num.toString(),
 });
 

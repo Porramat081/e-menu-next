@@ -53,5 +53,5 @@ input[type="number"] {
 }
 
 .badge {
-  @apply text-xs rounded-full flex justify-center items-center w-0.5 h-0.5 bg-red-400;
+  @apply text-white text-[0.5rem] rounded-full flex justify-center items-center w-4 h-4 bg-red-400 absolute top-[-5] right-[-5];
 }

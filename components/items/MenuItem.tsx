@@ -27,24 +27,14 @@ export default function MenuItem(props: MenuItemType) {
   };
 
   const handleMinus = () => {
-    setNum((prev) => {
-      if (prev > 0) {
-        if (prev - 1 === 0) {
-          removeCartItem(props.id);
-        } else {
-          const cartUpdate: CartItemType = {
-            id: props.id,
-            title: props.name,
-            unitPrice: props.price,
-            qty: 1,
-          };
-          updateQty(cartUpdate, 1, DirectionQty.Minus);
-        }
-
-        return prev - 1;
-      }
-      return prev;
-    });
+    setNum((prev) => (prev > 0 ? prev - 1 : prev));
+    const cartUpdate: CartItemType = {
+      id: props.id,
+      title: props.name,
+      unitPrice: props.price,
+      qty: 1,
+    };
+    updateQty(cartUpdate, 1, DirectionQty.Minus);
   };
 
   useEffect(() => {
@@ -59,6 +49,7 @@ export default function MenuItem(props: MenuItemType) {
             src={props.imageUrl}
             alt={`menu-image`}
             fill
+            sizes="100%"
             className="object-cover object-center origin-center"
           ></Image>
         </div>

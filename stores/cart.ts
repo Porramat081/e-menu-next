@@ -32,17 +32,28 @@ export default create<Store>()((set) => ({
             ),
           };
         } else {
-          console.log("add");
           return { cartItems: [...state.cartItems, itemInput] };
         }
       } else if (dir == "Minus") {
-        return {
-          cartItems: state.cartItems.map((item) =>
-            item.id === itemInput.id && item.qty - num >= 0
-              ? { ...item, qty: item.qty - num }
-              : item
-          ),
-        };
+        const selectItem = state.cartItems.find(
+          (item) => item.id === itemInput.id
+        );
+        if (selectItem) {
+          if (selectItem.qty - num === 0) {
+            return {
+              cartItems: state.cartItems.filter(
+                (item) => item.id !== itemInput.id
+              ),
+            };
+          }
+          return {
+            cartItems: state.cartItems.map((item) =>
+              item.id === itemInput.id
+                ? { ...item, qty: item.qty > 0 ? item.qty - num : item.qty }
+                : item
+            ),
+          };
+        }
       }
       return { cartItems: state.cartItems };
     }),

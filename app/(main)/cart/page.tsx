@@ -44,6 +44,7 @@ const ItemRow = (props: CartItemType) => {
 
 export default function CartPage() {
   const { cartItems, clearCart } = useCart();
+
   const router = useRouter();
   const handleSubmitOrder = () => {
     console.log("call submit order api");
@@ -52,6 +53,7 @@ export default function CartPage() {
   const totalQty = () => {
     return cartItems.reduce((sum, item) => sum + item.qty, 0);
   };
+
   return (
     <div>
       {cartItems.length > 0 ? (

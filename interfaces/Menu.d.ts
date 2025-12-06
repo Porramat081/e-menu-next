@@ -11,3 +11,10 @@ export interface CartItemType {
   unitPrice: number;
   qty: number;
 }
+
+export interface OrderType {
+  id: string;
+  status: string;
+  date: Date;
+  itemList: CartItemType[];
+}
