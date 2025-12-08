@@ -55,3 +55,27 @@ input[type="number"] {
 .badge {
   @apply text-white text-[0.5rem] rounded-full flex justify-center items-center w-4 h-4 bg-red-400 absolute top-[-5] right-[-5];
 }
+
+.form-input {
+  @apply bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4;
+}
+
+.form-input label {
+  @apply block text-gray-700 text-sm font-bold mb-2;
+}
+
+.form-input input {
+  @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight outline-none;
+}
+
+.form-input input {
+  @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight outline-none;
+}
+
+.error-input {
+  @apply border-red-500;
+}
+
+.error-div {
+  @apply text-red-500 text-xs font-light;
+}
