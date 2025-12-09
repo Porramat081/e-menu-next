@@ -1,5 +1,4 @@
 import { MenuItemType } from "@/interfaces/Menu";
-import Image from "next/image";
 import MenuItem from "../items/MenuItem";
 
 interface MenuContainerProps {

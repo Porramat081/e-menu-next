@@ -40,7 +40,9 @@ export default function Page() {
           </div>
         </div>
       ) : (
-        <DashboardContainer />
+        <div className="px-4 py-2">
+          <DashboardContainer />
+        </div>
       )}
     </>
   );

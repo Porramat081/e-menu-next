@@ -90,7 +90,7 @@ export default function NavBar() {
 
       <div
         ref={divRef}
-        className={`sm:hidden block absolute z-10 transition-all duration-500 h-svh ${
+        className={`w-50 sm:hidden block absolute z-10 transition-all duration-500 h-svh ${
           !openMenu ? "-translate-x-full" : "translate-x-full/2"
         }`}
       >

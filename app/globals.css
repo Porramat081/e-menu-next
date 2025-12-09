@@ -41,7 +41,7 @@ input[type="number"] {
 }
 
 .table tbody tr td {
-  @apply py-2 text-center text-sm;
+  @apply py-2 text-center text-sm wrap-break-word text-wrap;
 }
 
 .action-btn {

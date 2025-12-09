@@ -7,7 +7,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-w-[1000px] min-w-[300px] min-h-svh mx-auto">
+    <div className="min-w-[300px] min-h-svh mx-auto">
       <div className="grid grid-cols-8">
         <div className="col-span-2 hidden sm:block">
           <div className="sticky top-0 h-svh">
