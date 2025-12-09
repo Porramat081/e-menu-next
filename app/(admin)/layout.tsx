@@ -1,11 +1,13 @@
-export default function AdminLayout({
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Admin Page",
+};
+
+export default function AdminRootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="max-w-[1000px] min-w-[300px] min-h-svh mx-auto">
-      {children}
-    </div>
-  );
+  return <div className="">{children}</div>;
 }

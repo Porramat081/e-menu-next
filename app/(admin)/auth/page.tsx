@@ -1,12 +1,13 @@
 "use client";
 
-import { getUserById, loginAdmin } from "@/apis/auth";
+import { loginAdmin } from "@/apis/auth";
 import { errorAlert, successAlert } from "@/utils/alertSwal";
 import { AxiosError } from "axios";
 import { Eye, EyeClosed } from "lucide-react";
 import { FormEvent, useState } from "react";
 import useLoading from "@/stores/loader";
 import Loader from "@/components/structure/Loader";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [openEye, setOpenEye] = useState(false);
@@ -17,6 +18,7 @@ export default function Page() {
     errorPassword: "",
   });
   const { startLoading, stopLoading, isLoading } = useLoading();
+  const router = useRouter();
   const toggleEye = () => {
     setOpenEye((prev) => !prev);
   };
@@ -54,6 +56,7 @@ export default function Page() {
         });
         if (data.message) {
           successAlert("", data.message);
+          router.push("/dashboard");
         }
       }
     } catch (err: AxiosError | unknown) {

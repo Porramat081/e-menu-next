@@ -79,3 +79,15 @@ input[type="number"] {
 .error-div {
   @apply text-red-500 text-xs font-light;
 }
+
+.dash-card {
+  @apply border border-blue-500 rounded-md py-2 px-4;
+}
+
+.dash-card div:nth-child(1) {
+  @apply text-xl md:text-2xl font-bold;
+}
+
+.dash-card div:nth-child(2) {
+  @apply text-xl md:text-2xl text-end font-semibold;
+}
