@@ -1,7 +1,27 @@
 import Link from "next/link";
 
-const mock_menu_item = { title: "menu", link: "link" };
-const mock_menu_list = [1, 2, 3, 4, 5];
+const mock_menu_item = [
+  {
+    title: "Dashboard",
+    link: "/dashboard",
+  },
+  {
+    title: "Product",
+    link: "/dashboard/product",
+  },
+  {
+    title: "Order",
+    link: "/dashboard/order",
+  },
+  {
+    title: "Customer",
+    link: "/dashboard/customer",
+  },
+  {
+    title: "Staff",
+    link: "/dashboard/staff",
+  },
+];
 
 export default function AdminMenu({ isMain }: { isMain?: boolean }) {
   return (
@@ -10,12 +30,8 @@ export default function AdminMenu({ isMain }: { isMain?: boolean }) {
         <h2 className="font-semibold text-md">Menu</h2>
       </div>
       <div className={`flex flex-col gap-4 ${!isMain && "sm:hidden"}`}>
-        {mock_menu_list.map((item, index) => (
-          <MenuItem
-            key={index}
-            title={mock_menu_item.title + item}
-            link={mock_menu_item.link + item}
-          />
+        {mock_menu_item.map((item, index) => (
+          <MenuItem key={index} title={item.title} link={item.link} />
         ))}
       </div>
     </nav>
@@ -31,7 +47,7 @@ const MenuItem = (props: MenuItemProps) => {
   return (
     <div className="">
       <Link href={props.link}>
-        <span className="text-sm text-wrap">{props.title + "gergghriu"}</span>
+        <span className="text-sm text-wrap">{props.title}</span>
       </Link>
     </div>
   );

@@ -1,7 +1,5 @@
 import AdminMenu from "@/components/container/AdminMenu";
 import AdminNav from "@/components/container/AdminNav";
-import MenuBar from "@/components/structure/MenuBar";
-import NavBar from "@/components/structure/NavBar";
 
 export default function DashBoardLayout({
   children,
