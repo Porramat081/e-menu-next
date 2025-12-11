@@ -8,21 +8,30 @@ import Loader from "@/components/structure/Loader";
 import { useRouter } from "next/navigation";
 import { checkAdmin } from "@/utils/checkToken";
 import DashboardContainer from "@/components/container/DashboardContainer";
+import useUser from "@/stores/user";
 
 export default function Page() {
-  const [] = useState();
+  const { setCurrentUser } = useUser();
   const { isLoading, startLoading, stopLoading } = useLoading();
   const router = useRouter();
   const fetchUser = async () => {
     try {
       startLoading();
       const data = await getUserById();
-      if (!checkAdmin(data.roles || [])) {
+      if (!checkAdmin(data.roles)) {
         router.replace("/auth");
         throw new Error("Unauthorizied user");
+      } else {
+        const getUser = {
+          id: data.userDto?.id || "",
+          email: data.userDto?.email || "",
+          fullName: data.userDto?.firstName + " " + data.userDto?.lastName,
+        };
+        setCurrentUser(getUser);
       }
     } catch (err) {
       errorAlert("Access Denied", err);
+      router.replace("/auth");
     } finally {
       stopLoading();
     }

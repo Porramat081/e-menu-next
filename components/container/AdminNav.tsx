@@ -1,10 +1,9 @@
 "use client";
 
-import { Menu, Receipt, Search, ShoppingCart } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import MenuBar from "@/components/container/AdminMenu";
-import { useRouter } from "next/navigation";
-import useCart from "@/stores/cart";
+import useUser from "@/stores/user";
 
 export default function NavBar() {
   const [openMenu, setOpenMenu] = useState(false);
@@ -25,13 +24,7 @@ export default function NavBar() {
     }
   };
 
-  const router = useRouter();
-
-  const { cartItems } = useCart();
-
-  const totalQty = () => {
-    return cartItems.reduce((sum, item) => sum + item.qty, 0);
-  };
+  const { currentUser } = useUser();
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutSide);
@@ -67,22 +60,11 @@ export default function NavBar() {
           </button>
         </div>
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => router.push("/cart")}
-            className="block cursor-pointer relative"
-          >
-            <ShoppingCart size={20} />
-            {totalQty() > 0 && <div className="badge">{totalQty()}</div>}
-          </button>
-          <button
-            onClick={() => router.push("/bill")}
-            className="block cursor-pointer"
-          >
-            <Receipt size={20} />
-          </button>
+          <span>{currentUser.email}</span>
+          <span>{currentUser.fullName}</span>
           <div>
             <button className="cursor-pointer flex items-center justify-center rounded-full bg-blue-300 w-7 h-7">
-              <b>43</b>
+              <b>{currentUser.id}</b>
             </button>
           </div>
         </div>

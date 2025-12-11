@@ -17,12 +17,4 @@ export const getUserById = async () => {
     await axiosInstance()
   ).get("auth/current-user", { withCredentials: true });
   return res.data?.data;
-  // const res = await fetch("http://localhost:8080/api/v1/auth/current-user", {
-  //   credentials: "include",
-  // });
-  // if (res.ok) {
-  //   const user = await res.json();
-  //   console.log(user);
-  // }
-  // return res;
 };

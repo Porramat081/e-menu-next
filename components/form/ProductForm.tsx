@@ -1,12 +1,13 @@
 "use client";
 
 import { ProductObjType, ProductStatus } from "@/interfaces/Product";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import ImageUploader, { PreviewItem } from "../ui/ImageUploader";
 
 const initProductObj: ProductObjType = {
   name: "",
   price: 0,
-  stock: 0,
+  stock: 1,
   description: "",
   status: ProductStatus.ACTIVE,
   createdAt: new Date(),
@@ -14,12 +15,16 @@ const initProductObj: ProductObjType = {
 };
 
 export default function ProductForm() {
+  const [images, setImages] = useState<PreviewItem[]>([]);
   const [productObj, setProductObj] = useState<ProductObjType>(initProductObj);
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
     console.log("add product");
+    console.log(productObj);
+    console.log(images);
   };
   const handleChangeObj = (
-    e: ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     objProp: string
   ) => {
     setProductObj((prev) => ({ ...prev, [objProp]: e.target.value }));
@@ -59,13 +64,19 @@ export default function ProductForm() {
       <div>
         <label htmlFor="product-description">Description</label>
         <textarea
+          onChange={(e) => handleChangeObj(e, "description")}
           id="product-description"
           className="resize-y border rounded-md w-full h-20 p-4 text-sm"
         ></textarea>
       </div>
       <div>
-        <label htmlFor="product-image">Product Image</label>
-        <input type="file" className="hidden" multiple id="product-images" />
+        <span className="block text-gray-700 text-sm font-bold mb-2">
+          Image
+        </span>
+        <ImageUploader images={images} setImages={setImages} />
+      </div>
+      <div>
+        <button className="action-btn bg-blue-400">Submit</button>
       </div>
     </form>
   );

@@ -54,7 +54,7 @@ export default function Page() {
           email: loginObj.userName,
           password: loginObj.password,
         });
-        if (data.message) {
+        if (data.data) {
           successAlert("", data.message);
           router.push("/dashboard");
         }
