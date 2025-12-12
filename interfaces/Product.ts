@@ -10,6 +10,4 @@ export interface ProductObjType {
   stock: number;
   status: ProductStatus;
   description?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }

@@ -3,6 +3,8 @@
 import { ProductObjType, ProductStatus } from "@/interfaces/Product";
 import { ChangeEvent, FormEvent, useState } from "react";
 import ImageUploader, { PreviewItem } from "../ui/ImageUploader";
+import { errorAlert } from "@/utils/alertSwal";
+import { createProduct } from "@/apis/product";
 
 const initProductObj: ProductObjType = {
   name: "",
@@ -10,15 +12,24 @@ const initProductObj: ProductObjType = {
   stock: 1,
   description: "",
   status: ProductStatus.ACTIVE,
-  createdAt: new Date(),
-  updatedAt: new Date(),
 };
 
 export default function ProductForm() {
   const [images, setImages] = useState<PreviewItem[]>([]);
   const [productObj, setProductObj] = useState<ProductObjType>(initProductObj);
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    try {
+      const res = await createProduct({
+        name: productObj.name,
+        price: productObj.price,
+        stock: productObj.stock,
+        imageFile: images.map((item) => item.file),
+      });
+      console.log(res);
+    } catch (err) {
+      errorAlert("Add Product Fail", err);
+    }
     console.log("add product");
     console.log(productObj);
     console.log(images);
@@ -57,7 +68,7 @@ export default function ProductForm() {
             type="number"
             defaultValue={1}
             id="product-stock"
-            onChange={(e) => handleChangeObj(e, "price")}
+            onChange={(e) => handleChangeObj(e, "stock")}
           />
         </div>
       </div>

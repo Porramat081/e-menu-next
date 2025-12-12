@@ -1,6 +1,6 @@
 import { Upload } from "lucide-react";
 import Image from "next/image";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect } from "react";
 
 export type PreviewItem = {
   file: File;
