@@ -8,13 +8,14 @@ export default function ThumbnailPic({
   alt: string;
 }) {
   return (
-    <div className="rounded-full w-15 h-15 overflow-clip">
+    <div className="rounded-full w-15 h-15 overflow-clip border">
       <Image
-        src={imgUrl}
+        src={"/api/image/" + imgUrl.split("/")[imgUrl.split("/").length - 1]}
         alt={alt}
         width={300}
         height={300}
-        className="object-cover object-center origin-center"
+        loading="eager"
+        className="object-cover object-center origin-center p-1"
       ></Image>
     </div>
   );

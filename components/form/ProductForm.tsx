@@ -1,22 +1,47 @@
 "use client";
 
 import { ProductObjType, ProductStatus } from "@/interfaces/Product";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import ImageUploader, { PreviewItem } from "../ui/ImageUploader";
-import { errorAlert } from "@/utils/alertSwal";
+import { errorAlert, successAlert } from "@/utils/alertSwal";
 import { createProduct } from "@/apis/product";
+import { useProduct } from "@/contexts/ProductContext";
 
 const initProductObj: ProductObjType = {
   name: "",
   price: 0,
   stock: 1,
   description: "",
+  category: "",
   status: ProductStatus.ACTIVE,
 };
 
 export default function ProductForm() {
+  const formRef = useRef<HTMLFormElement>(null);
+  const { fetchProduct } = useProduct();
   const [images, setImages] = useState<PreviewItem[]>([]);
   const [productObj, setProductObj] = useState<ProductObjType>(initProductObj);
+  const clearForm = () => {
+    setImages(() => []);
+    if (formRef.current) {
+      (
+        formRef.current.querySelector("#product-name") as HTMLInputElement
+      ).value = "";
+      (
+        formRef.current.querySelector("#product-price") as HTMLInputElement
+      ).valueAsNumber = 0;
+      (
+        formRef.current.querySelector("#product-stock") as HTMLInputElement
+      ).valueAsNumber = 1;
+      (
+        formRef.current.querySelector(
+          "#product-description"
+        ) as HTMLTextAreaElement
+      ).value = "";
+    }
+
+    setProductObj(() => initProductObj);
+  };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
@@ -26,13 +51,14 @@ export default function ProductForm() {
         stock: productObj.stock,
         imageFile: images.map((item) => item.file),
       });
-      console.log(res);
+      if (res.status === 200) {
+        clearForm();
+        await fetchProduct();
+        successAlert("Add Product Successfully");
+      }
     } catch (err) {
       errorAlert("Add Product Fail", err);
     }
-    console.log("add product");
-    console.log(productObj);
-    console.log(images);
   };
   const handleChangeObj = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -41,7 +67,11 @@ export default function ProductForm() {
     setProductObj((prev) => ({ ...prev, [objProp]: e.target.value }));
   };
   return (
-    <form className="form-input space-y-4" onSubmit={handleSubmit}>
+    <form
+      ref={formRef}
+      className="form-input space-y-4"
+      onSubmit={handleSubmit}
+    >
       <h2 className="font-bold text-xl text-center">Add New Product</h2>
       <div>
         <label htmlFor="product-name">Product Name</label>
@@ -88,6 +118,16 @@ export default function ProductForm() {
       </div>
       <div>
         <button className="action-btn bg-blue-400">Submit</button>
+        <button
+          type="button"
+          onClick={clearForm}
+          className="action-btn bg-red-400"
+        >
+          clear
+        </button>
+        <button type="button" onClick={() => console.log(productObj)}>
+          Check
+        </button>
       </div>
     </form>
   );

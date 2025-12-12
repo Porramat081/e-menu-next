@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: "d2v5dzhdg4zhx3.cloudfront.net",
         protocol: "https",
       },
+      {
+        hostname: "localhost",
+        protocol: "http",
+      },
     ],
   },
 };

@@ -1,3 +1,5 @@
+import { axiosInstance } from "@/utils/axiosInstance";
+
 interface CreatedProductType {
   name: string;
   description?: string;
@@ -6,6 +8,13 @@ interface CreatedProductType {
   category?: string;
   imageFile: File[];
 }
+
+export const getProducts = async () => {
+  const res = await axiosInstance.get("products/all", {
+    withCredentials: true,
+  });
+  return res.data;
+};
 
 export const createProduct = async (productBody: CreatedProductType) => {
   const formData = new FormData();
@@ -31,6 +40,9 @@ export const createProduct = async (productBody: CreatedProductType) => {
     credentials: "include",
     mode: "cors",
   });
-
+  const result = await res.json();
+  if (!res.ok) {
+    throw new Error(`${result.message}`);
+  }
   return res;
 };

@@ -1,13 +1,15 @@
 import ProductForm from "@/components/form/ProductForm";
 import ProductList from "@/components/form/ProductList";
+import { ProductProvider } from "@/contexts/ProductContext";
 
 export default function Page() {
   return (
     <div>
-      <h2>Product Page</h2>
       <div className="space-y-2 px-2">
-        <ProductList />
-        <ProductForm />
+        <ProductProvider>
+          <ProductList />
+          <ProductForm />
+        </ProductProvider>
       </div>
     </div>
   );
