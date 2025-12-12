@@ -116,18 +116,8 @@ export default function ProductForm() {
         </span>
         <ImageUploader images={images} setImages={setImages} />
       </div>
-      <div>
-        <button className="action-btn bg-blue-400">Submit</button>
-        <button
-          type="button"
-          onClick={clearForm}
-          className="action-btn bg-red-400"
-        >
-          clear
-        </button>
-        <button type="button" onClick={() => console.log(productObj)}>
-          Check
-        </button>
+      <div className="flex justify-center">
+        <button className="action-btn bg-blue-400 w-[100px]">Submit</button>
       </div>
     </form>
   );

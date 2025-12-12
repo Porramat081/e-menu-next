@@ -24,8 +24,18 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+* {
+  -ms-overflow-style: none !important; /* Internet Explorer and Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+/* For Chrome, Safari, Opera, and other Webkit-based browsers */
+*::-webkit-scrollbar {
+  display: none !important;
+}
+
 .table {
-  @apply w-full border border-gray-200 rounded-lg overflow-hidden shadow-sm;
+  @apply w-full border border-gray-200 rounded-lg overflow-auto shadow-sm;
 }
 
 .table thead {
