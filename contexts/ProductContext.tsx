@@ -9,14 +9,25 @@ interface ProductContextType {
   productList: ProductListType[];
   addProductList: (newProduct: ProductListType) => void;
   fetchProduct: () => Promise<void>;
+  selectProduct: (product: ProductListType) => void;
+  selectedProduct: ProductListType | null;
+  clearSelectedProduct: () => void;
 }
 
 const ProductContext = createContext<ProductContextType | null>(null);
 
 export function ProductProvider({ children }: { children: React.ReactNode }) {
   const [productList, setProductList] = useState<ProductListType[]>([]);
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProductListType | null>(null);
   const addProductList = (newProduct: ProductListType) => {
     setProductList((prev) => [...prev, newProduct]);
+  };
+  const selectProduct = (product: ProductListType) => {
+    setSelectedProduct(product);
+  };
+  const clearSelectedProduct = () => {
+    setSelectedProduct(null);
   };
   const fetchProduct = async () => {
     try {
@@ -31,7 +42,10 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
             price: item.price,
             stock: item.stock,
             category: item.category?.name,
-            picUrl: (item.images[0]?.downloadUrl as string).substring(8),
+            picUrl:
+              item.images.length > 0
+                ? (item.images[0]?.downloadUrl as string).substring(8)
+                : "",
           };
           initList.push(newProductObj);
         });
@@ -43,7 +57,14 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
   };
   return (
     <ProductContext.Provider
-      value={{ productList, addProductList, fetchProduct }}
+      value={{
+        productList,
+        addProductList,
+        fetchProduct,
+        selectProduct,
+        selectedProduct,
+        clearSelectedProduct,
+      }}
     >
       {children}
     </ProductContext.Provider>

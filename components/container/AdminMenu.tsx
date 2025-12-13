@@ -46,7 +46,7 @@ interface MenuItemProps {
 const MenuItem = (props: MenuItemProps) => {
   return (
     <div className="">
-      <Link href={props.link}>
+      <Link href={props.link} prefetch>
         <span className="text-sm text-wrap">{props.title}</span>
       </Link>
     </div>

@@ -1,22 +1,59 @@
 "use client";
 
 import ThumbnailPic from "../ui/ThumbnailPic";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useProduct } from "@/contexts/ProductContext";
 import DropdowmMenu from "../ui/DropdownBtn";
+import { useRouter } from "next/navigation";
+import { ProductListType } from "@/interfaces/Product";
+import { confirmBox, errorAlert, successAlert } from "@/utils/alertSwal";
+import { deleteProduct } from "@/apis/product";
 
 export default function ProductList() {
-  const { productList, fetchProduct } = useProduct();
+  const { productList, fetchProduct, selectProduct } = useProduct();
+  const tableRef = useRef<HTMLTableElement>(null);
+  const router = useRouter();
+
+  const openViewProduct = (productId: string) => {
+    router.push("/dashboard/product/" + productId);
+  };
+
+  const handleEdit = (product: ProductListType) => {
+    selectProduct(product);
+  };
+
+  const handleDelete = async (productId: string) => {
+    try {
+      const result = await confirmBox("Do you want to delete this product?");
+
+      if (result.isConfirmed) {
+        const res = await deleteProduct(productId);
+
+        if (res.message) {
+          successAlert("Delete Product Successfully");
+          await fetchProduct();
+        }
+      }
+    } catch (err) {
+      errorAlert("Delete Product Fail", err);
+    }
+  };
 
   useEffect(() => {
     fetchProduct();
   }, []);
 
+  // useEffect(() => {
+  //   if (tableRef.current) {
+  //     tableRef.current.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // }, [productList.length]);
+
   return (
     <div className="form-input mt-2 px-0! md:px-8!">
       <h2 className="font-bold text-xl text-center mb-3">Product List</h2>
-      <div className="overflow-x-auto">
-        <table className="table">
+      <div className="overflow-x-auto overflow-visible!">
+        <table ref={tableRef} className="table overflow-y-visible!">
           <thead>
             <tr>
               <th>Pic</th>
@@ -35,10 +72,32 @@ export default function ProductList() {
                 <td>{item.name}</td>
                 <td>{item.price}</td>
                 <td>{item.stock}</td>
-                <td>
+                <td className="overflow-y-visible!">
                   <DropdowmMenu
                     triggerTitle=""
-                    listMenu={["menu1", "menu2"]}
+                    listMenu={[
+                      <button
+                        className="btn-dropdown"
+                        type="button"
+                        onClick={() => openViewProduct(item.id)}
+                      >
+                        View
+                      </button>,
+                      <button
+                        onClick={() => handleEdit(item)}
+                        className="btn-dropdown"
+                        type="button"
+                      >
+                        Edit
+                      </button>,
+                      <button
+                        onClick={() => handleDelete(item.id)}
+                        className="btn-dropdown"
+                        type="button"
+                      >
+                        Delete
+                      </button>,
+                    ]}
                     isLast={index === productList.length - 1}
                   />
                 </td>

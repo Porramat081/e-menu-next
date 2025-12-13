@@ -18,12 +18,11 @@ export default function DashBoardLayout({
   children: React.ReactNode;
 }) {
   const { setCurrentUser } = useUser();
-  const { isLoading, startLoading, stopLoading } = useLoading();
+  const { isLoading, stopLoading } = useLoading();
   const router = useRouter();
 
   const fetchUser = async () => {
     try {
-      startLoading();
       const data = await getUserById();
       if (!checkAdmin(data.roles)) {
         router.replace("/auth");
@@ -34,13 +33,14 @@ export default function DashBoardLayout({
           email: data.userDto?.email || "",
           fullName: data.userDto?.firstName + " " + data.userDto?.lastName,
         };
+        if (data.userDto?.id) {
+          stopLoading();
+        }
         setCurrentUser(getUser);
       }
     } catch (err) {
       errorAlert("Access Denied", err);
       router.replace("/auth");
-    } finally {
-      stopLoading();
     }
   };
   useEffect(() => {

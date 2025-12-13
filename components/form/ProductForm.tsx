@@ -1,11 +1,12 @@
 "use client";
 
 import { ProductObjType, ProductStatus } from "@/interfaces/Product";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import ImageUploader, { PreviewItem } from "../ui/ImageUploader";
 import { errorAlert, successAlert } from "@/utils/alertSwal";
-import { createProduct } from "@/apis/product";
+import { createProduct, editProduct } from "@/apis/product";
 import { useProduct } from "@/contexts/ProductContext";
+import { X } from "lucide-react";
 
 const initProductObj: ProductObjType = {
   name: "",
@@ -18,7 +19,7 @@ const initProductObj: ProductObjType = {
 
 export default function ProductForm() {
   const formRef = useRef<HTMLFormElement>(null);
-  const { fetchProduct } = useProduct();
+  const { fetchProduct, selectedProduct, clearSelectedProduct } = useProduct();
   const [images, setImages] = useState<PreviewItem[]>([]);
   const [productObj, setProductObj] = useState<ProductObjType>(initProductObj);
   const clearForm = () => {
@@ -42,22 +43,52 @@ export default function ProductForm() {
 
     setProductObj(() => initProductObj);
   };
+  const handleToTop = () => {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  };
+  const handleClearSelect = () => {
+    clearSelectedProduct();
+    clearForm();
+  };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const res = await createProduct({
-        name: productObj.name,
-        price: productObj.price,
-        stock: productObj.stock,
-        imageFile: images.map((item) => item.file),
-      });
-      if (res.status === 200) {
-        clearForm();
-        await fetchProduct();
-        successAlert("Add Product Successfully");
+      if (selectedProduct) {
+        const res = await editProduct(selectedProduct.id, {
+          name: productObj.name,
+          price: productObj.price,
+          stock: productObj.stock,
+          description: productObj.description,
+          imageFile: images.map((item) => item.file),
+        });
+        if (res.status === 200) {
+          clearForm();
+          clearSelectedProduct();
+          await fetchProduct();
+          successAlert("Update Product Successfully");
+          handleToTop();
+        }
+      } else {
+        const res = await createProduct({
+          name: productObj.name,
+          price: productObj.price,
+          stock: productObj.stock,
+          description: productObj.description,
+          imageFile: images.map((item) => item.file),
+        });
+        if (res.status === 200) {
+          clearForm();
+          await fetchProduct();
+          successAlert("Add Product Successfully");
+          handleToTop();
+        }
       }
     } catch (err) {
-      errorAlert("Add Product Fail", err);
+      errorAlert(
+        selectedProduct ? "Edit Product Fail" : "Add Product Fail",
+        err
+      );
     }
   };
   const handleChangeObj = (
@@ -66,13 +97,58 @@ export default function ProductForm() {
   ) => {
     setProductObj((prev) => ({ ...prev, [objProp]: e.target.value }));
   };
+
+  useEffect(() => {
+    if (selectedProduct) {
+      setProductObj(() => ({
+        name: selectedProduct.name,
+        price: selectedProduct.price,
+        stock: selectedProduct.stock,
+        description: selectedProduct.description,
+        category: selectedProduct.category,
+        status: ProductStatus.ACTIVE,
+      }));
+      if (formRef.current) {
+        (
+          formRef.current.querySelector("#product-name") as HTMLInputElement
+        ).value = selectedProduct.name;
+        (
+          formRef.current.querySelector("#product-price") as HTMLInputElement
+        ).valueAsNumber = selectedProduct.price;
+        (
+          formRef.current.querySelector("#product-stock") as HTMLInputElement
+        ).valueAsNumber = selectedProduct.stock;
+        (
+          formRef.current.querySelector(
+            "#product-description"
+          ) as HTMLTextAreaElement
+        ).value = selectedProduct.description;
+
+        formRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [selectedProduct]);
+
   return (
     <form
       ref={formRef}
-      className="form-input space-y-4"
+      className="form-input space-y-4 relative"
       onSubmit={handleSubmit}
     >
-      <h2 className="font-bold text-xl text-center">Add New Product</h2>
+      {selectedProduct && (
+        <button
+          onClick={handleClearSelect}
+          type="button"
+          className="block cursor-pointer absolute top-5 right-5 bg-gray-400 rounded-full p-1"
+        >
+          <X size={16} />
+        </button>
+      )}
+      <h2 className="font-bold text-xl text-center">
+        {selectedProduct
+          ? "Edit Product : " + selectedProduct.name
+          : "Add New Product"}
+      </h2>
       <div>
         <label htmlFor="product-name">Product Name</label>
         <input
@@ -117,7 +193,9 @@ export default function ProductForm() {
         <ImageUploader images={images} setImages={setImages} />
       </div>
       <div className="flex justify-center">
-        <button className="action-btn bg-blue-400 w-[100px]">Submit</button>
+        <button className="action-btn bg-blue-400 w-[100px]">
+          {selectedProduct ? "Edit" : "Submit"}
+        </button>
       </div>
     </form>
   );

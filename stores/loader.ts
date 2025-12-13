@@ -7,7 +7,7 @@ interface LoadStore {
 }
 
 export default create<LoadStore>()((set) => ({
-  isLoading: false,
+  isLoading: true,
   startLoading: () => set(() => ({ isLoading: true })),
   stopLoading: () => set(() => ({ isLoading: false })),
 }));

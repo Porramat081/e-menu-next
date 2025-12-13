@@ -10,6 +10,7 @@ export const errorAlert = (title?: string, err?: AxiosError | unknown) => {
     icon: "error",
     title: title || "",
     text: message + " ,please try again",
+    returnFocus: false,
   });
 };
 
@@ -19,5 +20,21 @@ export const successAlert = (title?: string, message?: string) => {
     title,
     text: message,
     timer: 1000,
+    returnFocus: false,
+  });
+};
+
+export const confirmBox = (question: string) => {
+  return Swal.fire({
+    title: question,
+    showDenyButton: true,
+    confirmButtonText: "Yes",
+    denyButtonText: "No",
+    returnFocus: false,
+    customClass: {
+      actions: "my-actions",
+      confirmButton: "order-0",
+      denyButton: "order-1",
+    },
   });
 };

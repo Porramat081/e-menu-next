@@ -1,10 +1,9 @@
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { EllipsisVertical } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface DropdowmMenuProps {
   triggerTitle: string;
-  listMenu: string[];
+  listMenu: React.ReactNode[];
   isLast?: boolean;
 }
 
@@ -34,11 +33,13 @@ export default function DropdowmMenu(props: DropdowmMenuProps) {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative overflow-visible">
       <button
         type="button"
         ref={btnRef}
-        className="border rounded-full p-2 cursor-pointer flex items-center justify-between gap-1"
+        className={`border rounded-full p-2 cursor-pointer flex items-center justify-between gap-1 ${
+          isOpen && "bg-gray-600 text-white"
+        }`}
         onClick={toggleOpen}
       >
         {props.triggerTitle}
@@ -49,13 +50,14 @@ export default function DropdowmMenu(props: DropdowmMenuProps) {
         ref={boxRef}
         className={`${
           isOpen ? "opacity-100 scale-100" : "opacity-0 scale-0"
-        } transition ease-in-out duration-150 absolute origin-top mt-1 -left-4 z-5 bg-gray-300 rounded-lg overflow-hidden ${
+        } transition ease-in-out duration-150 absolute origin-top mt-1 -left-20 sm:-left-12 z-5 w-[100px] bg-gray-300 rounded-lg overflow-hidden ${
           props.isLast && "-top-full translate-y-[-50%] origin-bottom!"
         }`}
       >
         {props.listMenu.map((item, index) => (
           <div
-            className={`text-center py-2 px-2 cursor-pointer hover:bg-gray-400 ${
+            onClick={() => toggleOpen()}
+            className={`text-center ${
               index !== props.listMenu.length - 1
                 ? "border-b border-gray-200"
                 : ""

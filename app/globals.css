@@ -101,3 +101,7 @@ input[type="number"] {
 .dash-card div:nth-child(2) {
   @apply text-xl md:text-2xl text-end font-semibold;
 }
+
+.btn-dropdown {
+  @apply py-2 px-2 cursor-pointer w-full hover:bg-gray-400;
+}
