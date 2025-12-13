@@ -23,7 +23,29 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
   const addProductList = (newProduct: ProductListType) => {
     setProductList((prev) => [...prev, newProduct]);
   };
-  const selectProduct = (product: ProductListType) => {
+  const selectProduct = async (product: ProductListType) => {
+    const images2 = await Promise.all(
+      product.images.map(async (item) => {
+        const path = item.downloadUrl ?? item.url;
+        if (item.file instanceof File) return { url: path, file: item.file };
+        const res = await fetch("http://localhost:8080" + path);
+        const blob = await res.blob();
+
+        const file = new File([blob], item.fileName, {
+          type: blob.type,
+        });
+
+        return {
+          url: "http://localhost:8080" + item.downloadUrl,
+          file,
+        };
+      })
+    );
+
+    product.images = images2;
+
+    console.log(product);
+
     setSelectedProduct(product);
   };
   const clearSelectedProduct = () => {
@@ -42,6 +64,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
             price: item.price,
             stock: item.stock,
             category: item.category?.name,
+            images: item.images,
             picUrl:
               item.images.length > 0
                 ? (item.images[0]?.downloadUrl as string).substring(8)

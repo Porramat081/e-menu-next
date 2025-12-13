@@ -100,6 +100,7 @@ export default function ProductForm() {
 
   useEffect(() => {
     if (selectedProduct) {
+      setImages(selectedProduct.images);
       setProductObj(() => ({
         name: selectedProduct.name,
         price: selectedProduct.price,
@@ -190,7 +191,11 @@ export default function ProductForm() {
         <span className="block text-gray-700 text-sm font-bold mb-2">
           Image
         </span>
-        <ImageUploader images={images} setImages={setImages} />
+        <ImageUploader
+          images={images}
+          setImages={setImages}
+          isEdit={selectedProduct}
+        />
       </div>
       <div className="flex justify-center">
         <button className="action-btn bg-blue-400 w-[100px]">

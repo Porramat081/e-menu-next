@@ -32,4 +32,5 @@ export interface ProductListType {
   description: string;
   category: string;
   picUrl: string;
+  images: any;
 }

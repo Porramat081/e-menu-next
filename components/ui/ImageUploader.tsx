@@ -1,3 +1,4 @@
+import { ProductListType } from "@/interfaces/Product";
 import { Upload } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useEffect } from "react";
@@ -13,7 +14,6 @@ interface ImageUploaderProps {
   images: PreviewItem[];
   setImages: React.Dispatch<React.SetStateAction<PreviewItem[]>>;
 }
-
 export default function ImageUploader({
   label = "upload image here",
   maxFiles = 5,
@@ -55,7 +55,9 @@ export default function ImageUploader({
 
   useEffect(() => {
     return () => {
-      images.forEach((img) => URL.revokeObjectURL(img.url));
+      images.forEach((img) => {
+        URL.revokeObjectURL(img.url);
+      });
     };
   }, [images]);
 
@@ -95,8 +97,8 @@ export default function ImageUploader({
             className="relative border justify-items-center border-gray-200 rounded-lg overflow-hidden bg-gray-50"
           >
             <Image
-              src={item.url}
-              alt={item.file.name}
+              src={item.url || ""}
+              alt={item.file?.name || ""}
               width={300}
               height={300}
               className="w-auto h-32 object-center origin-center object-cover"
