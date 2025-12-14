@@ -1,31 +1,41 @@
 "use client";
 
+import { getProducts } from "@/apis/product";
 import MenuContainer from "@/components/container/MenuContainer";
 import Banner from "@/components/structure/Banner";
 import { MenuItemType } from "@/interfaces/Menu";
-
-const mock_item = (num: number) => ({
-  imageUrl: "/pic/food1.jpg",
-  name: "demo burger",
-  price: 200,
-  id: num.toString(),
-});
-
-const mock_list_item = [
-  mock_item(1),
-  mock_item(2),
-  mock_item(3),
-  mock_item(4),
-  mock_item(5),
-  mock_item(6),
-  mock_item(7),
-];
+import { ProductFetchType } from "@/interfaces/Product";
+import { errorAlert } from "@/utils/alertSwal";
+import { useEffect, useState } from "react";
 
 export default function Page() {
+  const [menus, setMenus] = useState<MenuItemType[]>([]);
+  const fetchMenu = async () => {
+    try {
+      const res = await getProducts();
+      if (res.data) {
+        setMenus(
+          (res.data as ProductFetchType[]).map((item) => ({
+            id: item.id,
+            imageUrl: item.images[0]?.downloadUrl?.substring(1),
+            name: item.name,
+            price: item.price,
+          }))
+        );
+      }
+    } catch (err) {
+      errorAlert("Fetch Menu Unsuccessfuylly", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchMenu();
+  }, []);
+
   return (
     <>
       <Banner />
-      <MenuContainer menuItem={mock_list_item} menuCategory={"Promotion"} />
+      <MenuContainer menuItem={menus} menuCategory={"Promotion"} />
     </>
   );
 }

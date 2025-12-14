@@ -10,7 +10,7 @@ export default function ThumbnailPic({
   return (
     <div className="rounded-full w-15 h-15 overflow-clip border">
       <Image
-        src={"/api/image/" + imgUrl.split("/")[imgUrl.split("/").length - 1]}
+        src={"/api/image/" + imgUrl?.split("/")[imgUrl?.split("/")?.length - 1]}
         alt={alt}
         width={300}
         height={300}

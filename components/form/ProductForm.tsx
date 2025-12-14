@@ -191,11 +191,7 @@ export default function ProductForm() {
         <span className="block text-gray-700 text-sm font-bold mb-2">
           Image
         </span>
-        <ImageUploader
-          images={images}
-          setImages={setImages}
-          isEdit={selectedProduct}
-        />
+        <ImageUploader images={images} setImages={setImages} />
       </div>
       <div className="flex justify-center">
         <button className="action-btn bg-blue-400 w-[100px]">

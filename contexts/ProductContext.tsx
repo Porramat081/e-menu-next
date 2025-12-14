@@ -25,21 +25,31 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
   };
   const selectProduct = async (product: ProductListType) => {
     const images2 = await Promise.all(
-      product.images.map(async (item) => {
-        const path = item.downloadUrl ?? item.url;
-        if (item.file instanceof File) return { url: path, file: item.file };
-        const res = await fetch("http://localhost:8080" + path);
-        const blob = await res.blob();
+      product.images.map(
+        async (item: {
+          downloadUrl: string;
+          url: string;
+          file: File;
+          fileName: string;
+        }) => {
+          const path = item.downloadUrl ?? item.url;
+          if (item.file instanceof File) return { url: path, file: item.file };
+          const res = await fetch(
+            process.env.NEXT_PUBLIC_BASEURL + path.substring(1)
+          );
+          const blob = await res.blob();
 
-        const file = new File([blob], item.fileName, {
-          type: blob.type,
-        });
+          const file = new File([blob], item.fileName, {
+            type: blob.type,
+          });
 
-        return {
-          url: "http://localhost:8080" + item.downloadUrl,
-          file,
-        };
-      })
+          return {
+            url:
+              process.env.NEXT_PUBLIC_BASEURL + item.downloadUrl.substring(1),
+            file,
+          };
+        }
+      )
     );
 
     product.images = images2;

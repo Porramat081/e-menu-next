@@ -43,12 +43,6 @@ export default function ProductList() {
     fetchProduct();
   }, []);
 
-  // useEffect(() => {
-  //   if (tableRef.current) {
-  //     tableRef.current.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // }, [productList.length]);
-
   return (
     <div className="form-input mt-2 px-0! md:px-8!">
       <h2 className="font-bold text-xl text-center mb-3">Product List</h2>

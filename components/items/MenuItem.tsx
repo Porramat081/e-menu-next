@@ -46,7 +46,11 @@ export default function MenuItem(props: MenuItemType) {
       <div className="w-full h-full p-2 rounded-2xl overflow-clip">
         <div className="relative w-full h-full rounded-2xl overflow-clip">
           <Image
-            src={props.imageUrl}
+            loading="eager"
+            src={
+              "/api/image/" +
+              props.imageUrl?.split("/")[props.imageUrl?.split("/").length - 1]
+            }
             alt={`menu-image`}
             fill
             sizes="100%"
