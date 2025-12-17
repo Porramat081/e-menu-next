@@ -10,6 +10,7 @@ export interface CartItemType {
   title: string;
   unitPrice: number;
   qty: number;
+  imageUrl: string;
 }
 
 export interface OrderType {

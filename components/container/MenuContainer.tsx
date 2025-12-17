@@ -12,7 +12,7 @@ export default function MenuContainer(props: MenuContainerProps) {
       <div>
         <h2>{props.menuCategory}</h2>
       </div>
-      <div className="grid grid-cols-3 gap-2 md:grid-cols-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:grid-cols-4">
         {props.menuItem.map((item, index) => (
           <MenuItem {...item} key={index} />
         ))}

@@ -3,6 +3,7 @@ import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import useCart, { DirectionQty } from "@/stores/cart";
+import ImageProduct from "../ui/ImageProduct";
 
 export default function MenuItem(props: MenuItemType) {
   const [num, setNum] = useState<number>(0);
@@ -21,6 +22,7 @@ export default function MenuItem(props: MenuItemType) {
       id: props.id,
       title: props.name,
       unitPrice: props.price,
+      imageUrl: props.imageUrl,
       qty: 1,
     };
     updateQty(cartUpdate, 1, DirectionQty.Plus);
@@ -32,6 +34,7 @@ export default function MenuItem(props: MenuItemType) {
       id: props.id,
       title: props.name,
       unitPrice: props.price,
+      imageUrl: props.imageUrl,
       qty: 1,
     };
     updateQty(cartUpdate, 1, DirectionQty.Minus);
@@ -45,17 +48,7 @@ export default function MenuItem(props: MenuItemType) {
     <div className="col-span-1 rounded-2xl overflow-clip bg-gray-300 h-auto w-full aspect-square justify-self-center">
       <div className="w-full h-full p-2 rounded-2xl overflow-clip">
         <div className="relative w-full h-full rounded-2xl overflow-clip">
-          <Image
-            loading="eager"
-            src={
-              "/api/image/" +
-              props.imageUrl?.split("/")[props.imageUrl?.split("/").length - 1]
-            }
-            alt={`menu-image`}
-            fill
-            sizes="100%"
-            className="object-cover object-center origin-center"
-          ></Image>
+          <ImageProduct imageUrl={props.imageUrl} />
         </div>
       </div>
       <div className="py-1 px-2">

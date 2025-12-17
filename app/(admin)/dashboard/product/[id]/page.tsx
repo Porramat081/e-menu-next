@@ -13,7 +13,6 @@ export default function Page() {
   const fetchProduct = async () => {
     try {
       const res = await getProductById(id as string);
-      console.log(res);
     } catch (err) {
       errorAlert("Getting product fail", err);
     }

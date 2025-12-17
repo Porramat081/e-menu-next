@@ -1,4 +1,3 @@
-import { ProductListType } from "@/interfaces/Product";
 import { Upload } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useEffect } from "react";

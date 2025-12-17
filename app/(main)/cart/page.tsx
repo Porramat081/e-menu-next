@@ -1,8 +1,11 @@
 "use client";
 
+import { createOrder } from "@/apis/order";
 import EmptyItem from "@/components/items/EmptyItem";
+import ImageProduct from "@/components/ui/ImageProduct";
 import { CartItemType } from "@/interfaces/Menu";
 import useCart, { DirectionQty } from "@/stores/cart";
+import { errorAlert } from "@/utils/alertSwal";
 import { Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -16,13 +19,20 @@ const ItemRow = (props: CartItemType) => {
     updateQty(props, 1, DirectionQty.Minus);
   };
   return (
-    <tr>
-      <td>{props.title}</td>
-      <td>{`${props.unitPrice} x ${props.qty} = ${
-        props.unitPrice * props.qty
-      }`}</td>
-      <td className="flex justify-center">
-        <div className="flex items-center gap-2">
+    <tr className="grid grid-cols-2">
+      <td className="col-span-1">
+        <div className="flex items-center gap-2 pl-2">
+          <div className="relative w-[50px] h-[50px] overflow-clip rounded-full">
+            <ImageProduct imageUrl={props.imageUrl} />
+          </div>
+          <span className="">{props.title}</span>
+        </div>
+      </td>
+      <td className="col-span-1">
+        <div>
+          {`${props.unitPrice} x ${props.qty} = ${props.unitPrice * props.qty}`}
+        </div>
+        <div className="flex justify-center mt-2 items-center gap-2">
           <button
             onClick={handleMinus}
             className="qty-btn bg-red-500 text-white"
@@ -46,8 +56,17 @@ export default function CartPage() {
   const { cartItems, clearCart } = useCart();
 
   const router = useRouter();
-  const handleSubmitOrder = () => {
-    console.log("call submit order api");
+  const handleSubmitOrder = async () => {
+    try {
+      const res = await createOrder({
+        productLists: cartItems.map((item) => ({
+          productId: item.id,
+          quantity: item.qty,
+        })),
+      });
+    } catch (err) {
+      errorAlert("Create Order Failure", err);
+    }
     clearCart();
   };
   const totalQty = () => {
@@ -62,12 +81,11 @@ export default function CartPage() {
             <h1 className="font-semibold text-lg">Cart</h1>
           </div>
           <div className="p-4">
-            <table className="table">
+            <table className="table max-w-[800px] mx-auto">
               <thead>
-                <tr>
+                <tr className="grid grid-cols-2">
                   <th>Menu</th>
                   <th>Price</th>
-                  <th>Qty</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,11 +94,8 @@ export default function CartPage() {
                 ))}
               </tbody>
               <tfoot className="bg-gray-50 border-t border-gray-400">
-                <tr>
-                  <td
-                    className="px-4 py-2 text-right text-sm font-medium text-gray-700"
-                    colSpan={2}
-                  >
+                <tr className="grid grid-cols-2">
+                  <td className="px-4 py-2 text-right text-sm font-medium text-gray-700">
                     Total
                   </td>
 

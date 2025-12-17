@@ -7,6 +7,9 @@ import { errorAlert, successAlert } from "@/utils/alertSwal";
 import { createProduct, editProduct } from "@/apis/product";
 import { useProduct } from "@/contexts/ProductContext";
 import { X } from "lucide-react";
+import CategoryDropdown from "../ui/CategoryDropdown";
+import { getCategory } from "@/apis/category";
+import useCategory from "@/stores/category";
 
 const initProductObj: ProductObjType = {
   name: "",
@@ -18,8 +21,15 @@ const initProductObj: ProductObjType = {
 };
 
 export default function ProductForm() {
+  const [productStatus, setProductStatus] = useState("Active");
   const formRef = useRef<HTMLFormElement>(null);
   const { fetchProduct, selectedProduct, clearSelectedProduct } = useProduct();
+  const {
+    setCategoryItems,
+    selectedCategory,
+    categoryItems,
+    changeSelectedCategory,
+  } = useCategory();
   const [images, setImages] = useState<PreviewItem[]>([]);
   const [productObj, setProductObj] = useState<ProductObjType>(initProductObj);
   const clearForm = () => {
@@ -53,12 +63,15 @@ export default function ProductForm() {
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     try {
       if (selectedProduct) {
         const res = await editProduct(selectedProduct.id, {
           name: productObj.name,
           price: productObj.price,
           stock: productObj.stock,
+          category: selectedCategory,
+          status: productStatus,
           description: productObj.description,
           imageFile: images.map((item) => item.file),
         });
@@ -74,6 +87,8 @@ export default function ProductForm() {
           name: productObj.name,
           price: productObj.price,
           stock: productObj.stock,
+          category: selectedCategory,
+          status: productStatus,
           description: productObj.description,
           imageFile: images.map((item) => item.file),
         });
@@ -96,6 +111,18 @@ export default function ProductForm() {
     objProp: string
   ) => {
     setProductObj((prev) => ({ ...prev, [objProp]: e.target.value }));
+  };
+
+  const fetchCategory = async () => {
+    try {
+      const res = await getCategory();
+      if (res.data?.length) {
+        changeSelectedCategory(res.data[res.data.length - 1].name);
+        setCategoryItems(res.data);
+      }
+    } catch (err) {
+      errorAlert("Fetch Category Failure", err);
+    }
   };
 
   useEffect(() => {
@@ -128,12 +155,13 @@ export default function ProductForm() {
         formRef.current.scrollIntoView({ behavior: "smooth" });
       }
     }
+    fetchCategory();
   }, [selectedProduct]);
 
   return (
     <form
       ref={formRef}
-      className="form-input space-y-4 relative"
+      className="form-input space-y-4 relative max-w-[500px] mx-auto"
       onSubmit={handleSubmit}
     >
       {selectedProduct && (
@@ -159,7 +187,7 @@ export default function ProductForm() {
         />
       </div>
       <div className="flex items-center gap-2 justify-between">
-        <div>
+        <div className="flex-1">
           <label htmlFor="product-price">Price</label>
           <input
             className="text-end"
@@ -168,7 +196,7 @@ export default function ProductForm() {
             onChange={(e) => handleChangeObj(e, "price")}
           />
         </div>
-        <div>
+        <div className="flex-1">
           <label htmlFor="product-stock">Stock</label>
           <input
             className="text-end"
@@ -179,6 +207,27 @@ export default function ProductForm() {
           />
         </div>
       </div>
+
+      <div className="flex items-center gap-2 justify-between">
+        <div className="flex-1">
+          <label>Category</label>
+          <CategoryDropdown
+            items={categoryItems}
+            selectedItem={selectedCategory}
+            setSelectedItem={changeSelectedCategory}
+          />
+        </div>
+        <div className="flex-1">
+          <label>Status</label>
+          <CategoryDropdown
+            isStatus
+            items={["Active", "Suspended", "Unavalible"]}
+            selectedItem={productStatus}
+            setSelectedItem={(str) => setProductStatus(str)}
+          />
+        </div>
+      </div>
+
       <div>
         <label htmlFor="product-description">Description</label>
         <textarea

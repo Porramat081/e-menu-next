@@ -35,7 +35,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
           const path = item.downloadUrl ?? item.url;
           if (item.file instanceof File) return { url: path, file: item.file };
           const res = await fetch(
-            process.env.NEXT_PUBLIC_BASEURL + path.substring(1)
+            process.env.NEXT_PUBLIC_IMAGEURL + path.substring(1)
           );
           const blob = await res.blob();
 
@@ -45,7 +45,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
 
           return {
             url:
-              process.env.NEXT_PUBLIC_BASEURL + item.downloadUrl.substring(1),
+              process.env.NEXT_PUBLIC_IMAGEURL + item.downloadUrl.substring(1),
             file,
           };
         }
@@ -53,8 +53,6 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
     );
 
     product.images = images2;
-
-    console.log(product);
 
     setSelectedProduct(product);
   };

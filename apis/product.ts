@@ -7,6 +7,7 @@ interface CreatedProductType {
   stock: number;
   category?: string;
   imageFile: File[];
+  status: string;
 }
 
 export const getProducts = async () => {
