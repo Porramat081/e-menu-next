@@ -41,6 +41,8 @@ export default function DashBoardLayout({
     } catch (err) {
       errorAlert("Access Denied", err);
       router.replace("/auth");
+    } finally {
+      stopLoading();
     }
   };
   useEffect(() => {
