@@ -1,10 +1,12 @@
-import NavBar from "@/components/structure/NavBar";
+import Footer from "@/components/structure/Footer";
+import Hero from "@/components/structure/Hero";
 
 export default function Home() {
   return (
     <div>
-      <NavBar />
+      <Hero />
       <div>Home page</div>
+      <Footer />
     </div>
   );
 }

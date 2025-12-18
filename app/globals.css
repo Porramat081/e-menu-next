@@ -105,3 +105,11 @@ input[type="number"] {
 .btn-dropdown {
   @apply py-2 px-2 cursor-pointer w-full hover:bg-gray-400;
 }
+
+.footer-container div:not(:first-of-type) {
+  @apply cursor-pointer hover:underline;
+}
+
+.link-container div {
+  @apply cursor-pointer hover:underline;
+}
