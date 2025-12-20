@@ -14,8 +14,8 @@ const mock_menu_item = [
     link: "/dashboard/order",
   },
   {
-    title: "Customer",
-    link: "/dashboard/customer",
+    title: "Promotion",
+    link: "/dashboard/promotion",
   },
   {
     title: "Staff",
