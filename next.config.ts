@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         port: "8080",
         pathname: "/api/v1/images/image/download/**",
       },
+      {
+        hostname: "api.omise.co",
+        protocol: "https",
+      },
     ],
   },
 };

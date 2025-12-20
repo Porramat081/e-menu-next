@@ -61,6 +61,7 @@ export const editProduct = async (
 };
 
 export const createProduct = async (productBody: CreatedProductType) => {
+  console.log(productBody);
   const formData = new FormData();
   const productObj = {
     name: productBody.name,

@@ -1,4 +1,4 @@
-export const formatTime = (date: Date) => {
+export const formatTime = (date: string) => {
   return new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
     month: "2-digit",
@@ -7,7 +7,7 @@ export const formatTime = (date: Date) => {
     minute: "2-digit",
     hour12: true,
   })
-    .format(date)
+    .format(new Date(date))
     .replace(",", "")
     .toUpperCase();
 };

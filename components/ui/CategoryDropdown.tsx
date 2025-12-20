@@ -39,19 +39,21 @@ export default function CategoryDropdown(props: CategoryDropdownProps) {
 
   return (
     <div className="">
-      <div className="relative inline-block text-left w-full">
+      <div className="relative text-left w-full">
         {/* Dropdown button */}
         <button
           ref={btnRef}
           type="button"
-          className="inline-flex justify-between items-center gap-2 w-full
+          className="flex relative overflow-x-auto justify-between items-center gap-2 w-full
                                rounded-md border border-gray-300
-                               shadow-sm px-4 py-2 bg-white text-sm
+                               shadow-sm px-2 py-5 bg-white text-sm
                                font-medium text-black hover:bg-gray-50"
           onClick={toggleDropdown}
         >
-          {props.selectedItem}
-          <ArrowDown size={16} />
+          <p className="absolute w-[80%] overflow-x-auto whitespace-nowrap">
+            {props.selectedItem}
+          </p>
+          <ArrowDown size={16} className="absolute right-2" />
         </button>
 
         {/* Dropdown menu */}
@@ -67,13 +69,31 @@ export default function CategoryDropdown(props: CategoryDropdownProps) {
                                     }`}
           >
             {!props.isStatus && (
-              <div className="p-1 flex items-center">
+              <div className="p-1 flex items-center overflow-x-auto!">
                 <input
                   type="text"
-                  placeholder="new category or search"
-                  onChange={(e) => props.setSelectedItem(e.target.value)}
+                  className="text-center overflow-x-auto! block max-w-fit whitespace-nowrap"
+                  placeholder="new category"
+                  id="new-category"
                 />
-                <button type="button" className="p-2 bg-blue-400 text-white">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    if (e.currentTarget.previousElementSibling) {
+                      props.setSelectedItem(
+                        (
+                          e.currentTarget
+                            .previousElementSibling as HTMLInputElement
+                        ).value
+                      );
+                      (
+                        e.currentTarget
+                          .previousElementSibling as HTMLInputElement
+                      ).value = "";
+                    }
+                  }}
+                  className="p-2 block bg-blue-400 text-white"
+                >
                   <Check size={14} />
                 </button>
               </div>

@@ -64,6 +64,9 @@ export default function CartPage() {
           quantity: item.qty,
         })),
       });
+      if (res.data?.id) {
+        router.replace("/bill/" + res.data?.id);
+      }
     } catch (err) {
       errorAlert("Create Order Failure", err);
     }

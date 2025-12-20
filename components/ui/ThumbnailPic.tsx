@@ -15,7 +15,7 @@ export default function ThumbnailPic({
         width={300}
         height={300}
         loading="eager"
-        className="object-cover object-center origin-center p-1"
+        className="object-cover object-center origin-center h-full"
       ></Image>
     </div>
   );

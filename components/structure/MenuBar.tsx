@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
-import { errorAlert } from "@/utils/alertSwal";
 import useCategory from "@/stores/category";
 import { getCategory } from "@/apis/category";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -13,6 +12,7 @@ export default function MenuBar({ isMain }: { isMain?: boolean }) {
     try {
       const res = await getCategory();
       if (res.data && res.data?.length > 0) {
+        console.log(res.data);
         setCategoryItems(res.data as []);
       }
     } catch (err) {

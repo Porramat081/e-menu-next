@@ -6,7 +6,7 @@ import ImageUploader, { PreviewItem } from "../ui/ImageUploader";
 import { errorAlert, successAlert } from "@/utils/alertSwal";
 import { createProduct, editProduct } from "@/apis/product";
 import { useProduct } from "@/contexts/ProductContext";
-import { X } from "lucide-react";
+import { ArrowUp, X } from "lucide-react";
 import CategoryDropdown from "../ui/CategoryDropdown";
 import { getCategory } from "@/apis/category";
 import useCategory from "@/stores/category";
@@ -61,44 +61,47 @@ export default function ProductForm() {
     clearSelectedProduct();
     clearForm();
   };
+  const validateObj = () => {
+    if (
+      !productObj.name ||
+      !productObj.price ||
+      !productObj.stock ||
+      !selectedCategory
+    ) {
+      return false;
+    }
+    return true;
+  };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
+    if (!validateObj()) {
+      return;
+    }
+    const newProductObj = {
+      name: productObj.name,
+      price: productObj.price,
+      stock: productObj.stock,
+      category: selectedCategory,
+      status: productStatus,
+      description: productObj.description,
+      imageFile: images.map((item) => item.file),
+    };
     try {
       if (selectedProduct) {
-        const res = await editProduct(selectedProduct.id, {
-          name: productObj.name,
-          price: productObj.price,
-          stock: productObj.stock,
-          category: selectedCategory,
-          status: productStatus,
-          description: productObj.description,
-          imageFile: images.map((item) => item.file),
-        });
+        const res = await editProduct(selectedProduct.id, newProductObj);
         if (res.status === 200) {
-          clearForm();
           clearSelectedProduct();
-          await fetchProduct();
           successAlert("Update Product Successfully");
-          handleToTop();
         }
       } else {
-        const res = await createProduct({
-          name: productObj.name,
-          price: productObj.price,
-          stock: productObj.stock,
-          category: selectedCategory,
-          status: productStatus,
-          description: productObj.description,
-          imageFile: images.map((item) => item.file),
-        });
+        const res = await createProduct(newProductObj);
         if (res.status === 200) {
-          clearForm();
-          await fetchProduct();
           successAlert("Add Product Successfully");
-          handleToTop();
         }
       }
+      clearForm();
+      await fetchProduct();
+      handleToTop();
     } catch (err) {
       errorAlert(
         selectedProduct ? "Edit Product Fail" : "Add Product Fail",
@@ -114,14 +117,18 @@ export default function ProductForm() {
   };
 
   const fetchCategory = async () => {
-    try {
-      const res = await getCategory();
-      if (res.data?.length) {
-        changeSelectedCategory(res.data[res.data.length - 1].name);
-        setCategoryItems(res.data);
+    if (selectedProduct) {
+      changeSelectedCategory(selectedProduct.category);
+    } else {
+      try {
+        const res = await getCategory();
+        if (res.data?.length) {
+          changeSelectedCategory(res.data[res.data.length - 1].name);
+          setCategoryItems(res.data);
+        }
+      } catch (err) {
+        errorAlert("Fetch Category Failure", err);
       }
-    } catch (err) {
-      errorAlert("Fetch Category Failure", err);
     }
   };
 
@@ -173,10 +180,25 @@ export default function ProductForm() {
           <X size={16} />
         </button>
       )}
-      <h2 className="font-bold text-xl text-center">
+      <h2 className="relative font-bold text-xl text-center">
         {selectedProduct
           ? "Edit Product : " + selectedProduct.name
           : "Add New Product"}
+
+        <div className="absolute right-5 top-0">
+          <button
+            onClick={() =>
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              })
+            }
+            type="button"
+            className="cursor-pointer rounded-full bg-blue-400 text-white p-1"
+          >
+            <ArrowUp size={16} />
+          </button>
+        </div>
       </h2>
       <div>
         <label htmlFor="product-name">Product Name</label>

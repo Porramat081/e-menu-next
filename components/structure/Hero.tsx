@@ -1,4 +1,9 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 export default function Hero() {
+  const router = useRouter();
   return (
     <div className="bg-[url('/pic/heroImage.jpg')] bg-cover bg-center h-screen pb-40 relative flex flex-col justify-end">
       <div className="absolute inset-0 bg-black/20 backdrop-contrast-80"></div>
@@ -10,6 +15,7 @@ export default function Hero() {
         </div>
         <div className="flex justify-center">
           <button
+            onClick={() => router.push("/menu")}
             type="button"
             className="cursor-pointer rounded-xl text-xl bg-linear-to-r from-pink-500 to-pink-100 px-4 py-2 transition duration-300 ease-in-out 
                hover:scale-110"

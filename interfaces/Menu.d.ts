@@ -15,7 +15,10 @@ export interface CartItemType {
 
 export interface OrderType {
   id: string;
-  status: string;
-  date: Date;
-  itemList: CartItemType[];
+  orderStatus: string;
+  orderDateTime: string;
+  orderItems: ProductListType[];
+  paymentResponse: {
+    paymentRef: string;
+  };
 }
