@@ -1,4 +1,7 @@
 import Link from "next/link";
+import Modal from "../structure/Modal";
+import Camera from "./Camera";
+import { useState } from "react";
 
 const mock_menu_item = [
   {
@@ -24,6 +27,7 @@ const mock_menu_item = [
 ];
 
 export default function AdminMenu({ isMain }: { isMain?: boolean }) {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <nav className="flex flex-col px-4 py-2 gap-4 bg-gray-500 overflow-x-auto min-h-svh">
       <div className="px-2 pt-1">
@@ -34,6 +38,18 @@ export default function AdminMenu({ isMain }: { isMain?: boolean }) {
           <MenuItem key={index} title={item.title} link={item.link} />
         ))}
       </div>
+      <div className="mt-[70%] mx-auto">
+        <button
+          onClick={() => setIsOpen(true)}
+          className="action-btn bg-blue-400 p-4!"
+        >
+          Scan Order
+        </button>
+      </div>
+
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <Camera />
+      </Modal>
     </nav>
   );
 }

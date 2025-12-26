@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.2.1",
     "apexcharts": "^5.3.6",
     "axios": "^1.13.2",
     "lucide-react": "^0.555.0",
@@ -16,6 +17,9 @@
     "react": "19.2.0",
     "react-apexcharts": "^1.9.0",
     "react-dom": "19.2.0",
+    "react-qr-code": "^2.0.18",
+    "react-qr-reader": "^3.0.0-beta-1",
+    "sockjs-client": "^1.6.1",
     "sweetalert2": "^11.26.4",
     "swiper": "^12.0.3",
     "zustand": "^5.0.9"

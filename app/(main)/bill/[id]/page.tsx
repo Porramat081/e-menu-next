@@ -11,9 +11,14 @@ import { getOrder } from "@/apis/order";
 import ThumbnailPic from "@/components/ui/ThumbnailPic";
 import Loader from "@/components/structure/Loader";
 import Image from "next/image";
+import QRCode from "react-qr-code";
+import { OrderStatus } from "@/interfaces/Product";
 
 export default function Page() {
   const [order, setOrder] = useState<OrderType | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<"Cash" | "PromptPay">(
+    "PromptPay"
+  );
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { id } = useParams();
   const router = useRouter();
@@ -38,7 +43,7 @@ export default function Page() {
   }, [id]);
 
   return (
-    <div className="container ">
+    <div className="container pb-8">
       {order ? (
         <div className="p-4 flex flex-col gap-4">
           <table className="table">
@@ -77,7 +82,7 @@ export default function Page() {
               <tr>
                 <td
                   className="px-4 py-2 text-right text-sm font-medium text-gray-700"
-                  colSpan={2}
+                  colSpan={3}
                 >
                   Total
                 </td>
@@ -93,44 +98,62 @@ export default function Page() {
               </tr>
             </tfoot>
           </table>
-          <div className="flex justify-end">
-            <BtnBill
-              status={
-                order.orderStatus as
-                  | "unpaid"
-                  | "paid"
-                  | "inprogress"
-                  | "finish"
-                  | "delivered"
-              }
-            />
-          </div>
-          <div>
-            <Image
-              src={order.paymentResponse.paymentRef}
-              alt="payment-ref"
-              width={200}
-              height={500}
-              unoptimized
-            />
-          </div>
+          <div>{order.queue}</div>
+          <>
+            {paymentMethod === "PromptPay" ? (
+              <div className="flex h-[450px] bg-gray-200 mx-auto w-[300px] relative justify-center">
+                <Image
+                  src={order.paymentResponse.paymentRef}
+                  alt="payment-ref"
+                  fill
+                  unoptimized
+                  className="object-contain object-center origin-center"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-2 font-semibold text-2xl">
+                <span>Pay By Cash</span>
+                <div>
+                  <QRCode value={order.orderRef || "demo"} />
+                </div>
+              </div>
+            )}
+          </>
         </div>
       ) : (
         <>
           {isLoading ? (
-            <Loader />
+            <div className="flex justify-center items-center py-4">
+              <Loader isPage />
+            </div>
           ) : (
             <EmptyItem message="You still don't have any order" />
           )}
         </>
       )}
-      <div className="flex justify-center">
-        <button
-          onClick={() => router.replace("/menu")}
-          className="action-btn bg-blue-400"
-        >
-          Menu
-        </button>
+
+      <div className="flex items-center gap-4 flex-col">
+        <div>
+          <select
+            onChange={(e) =>
+              setPaymentMethod(e.target.value as "PromptPay" | "Cash")
+            }
+            value={paymentMethod}
+            className="border rounded-lg py-2 px-3 "
+          >
+            <option value="PromptPay">QR PromptPay</option>
+            <option value="Cash">Cash</option>
+          </select>
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            onClick={() => router.replace("/menu")}
+            className="action-btn bg-blue-400"
+          >
+            Menu
+          </button>
+        </div>
       </div>
     </div>
   );

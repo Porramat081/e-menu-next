@@ -69,10 +69,10 @@ export default function CategoryDropdown(props: CategoryDropdownProps) {
                                     }`}
           >
             {!props.isStatus && (
-              <div className="p-1 flex items-center overflow-x-auto!">
+              <div className="p-1 flex overflow-x-auto!">
                 <input
                   type="text"
-                  className="text-center overflow-x-auto! block max-w-fit whitespace-nowrap"
+                  className="text-center overflow-x-auto! rounded-r-none! border-r-0! block max-w-fit whitespace-nowrap"
                   placeholder="new category"
                   id="new-category"
                 />
@@ -92,7 +92,7 @@ export default function CategoryDropdown(props: CategoryDropdownProps) {
                       ).value = "";
                     }
                   }}
-                  className="p-2 block bg-blue-400 text-white"
+                  className="p-2 block bg-blue-400 border border-black border-l-0! rounded-r-sm text-white"
                 >
                   <Check size={14} />
                 </button>

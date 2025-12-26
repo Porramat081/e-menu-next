@@ -1,3 +1,4 @@
+import OrderNotifications from "@/contexts/OrderNotifications";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,5 +10,10 @@ export default function AdminRootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="">{children}</div>;
+  return (
+    <div className="">
+      <OrderNotifications />
+      {children}
+    </div>
+  );
 }

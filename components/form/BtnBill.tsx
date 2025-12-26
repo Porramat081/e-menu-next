@@ -1,5 +1,7 @@
+import { OrderStatus } from "@/interfaces/Product";
+
 export interface BtnBillProps {
-  status: "unpaid" | "paid" | "inprogress" | "finish" | "delivered";
+  status: OrderStatus;
 }
 
 const PayBtn = () => {
@@ -13,9 +15,9 @@ const ViewBtn = () => {
 export default function BtnBill(props: BtnBillProps) {
   return (
     <>
-      {props.status === "unpaid" ? (
+      {props.status === OrderStatus.PENDING ? (
         <PayBtn />
-      ) : props.status === "paid" ? (
+      ) : props.status === OrderStatus.PAID ? (
         <ViewBtn />
       ) : (
         <></>

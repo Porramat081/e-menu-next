@@ -38,7 +38,7 @@ export default function NavBar() {
 
   return (
     <div className="sticky top-0 z-10">
-      <nav className="flex py-2 px-1 items-center justify-between sm:justify-center sm:gap-4 bg-gray-50">
+      <nav className="flex py-2 px-1 items-center justify-between sm:justify-end sm:gap-4 bg-gray-50">
         <div className="sm:hidden block">
           <button
             ref={btnRef}
@@ -49,22 +49,13 @@ export default function NavBar() {
             <Menu size={16} />
           </button>
         </div>
-        <div className="rounded-lg border flex overflow-clip w-[60%]">
-          <input
-            type="text"
-            placeholder="Search Menu"
-            className="outline-none px-2 py-0.5 sm:py-1 text-sm w-full"
-          />
-          <button className="block cursor-pointer bg-blue-300 px-3 active:text-white">
-            <Search size={16} />
-          </button>
-        </div>
+
         <div className="flex items-center gap-4">
           <span>{currentUser.email}</span>
           <span>{currentUser.fullName}</span>
           <div>
             <button className="cursor-pointer flex items-center justify-center rounded-full bg-blue-300 w-7 h-7">
-              <b>{currentUser.id}</b>
+              <b>{currentUser.fullName.charAt(0).toUpperCase()}</b>
             </button>
           </div>
         </div>

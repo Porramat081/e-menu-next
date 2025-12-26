@@ -34,3 +34,12 @@ export interface ProductListType {
   picUrl: string;
   images: any;
 }
+
+export enum OrderStatus {
+  PENDING = "PENDING",
+  PAID = "PAID",
+  PROCESSING = "PROCESSING",
+  FINISHED = "FINISHED",
+  DELIVERED = "DELIVERED",
+  CANCELLED = "CANCELLED",
+}
