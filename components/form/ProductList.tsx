@@ -8,10 +8,17 @@ import { useRouter } from "next/navigation";
 import { ProductListType } from "@/interfaces/Product";
 import { confirmBox, errorAlert, successAlert } from "@/utils/alertSwal";
 import { deleteProduct } from "@/apis/product";
-import { Plus } from "lucide-react";
+import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 
 export default function ProductList() {
-  const { productList, fetchProduct, selectProduct } = useProduct();
+  const {
+    productList,
+    fetchProduct,
+    selectProduct,
+    currentPage,
+    allPage,
+    handleChangeCurrentPage,
+  } = useProduct();
   const tableRef = useRef<HTMLTableElement>(null);
   const router = useRouter();
 
@@ -20,7 +27,6 @@ export default function ProductList() {
   };
 
   const handleEdit = (product: ProductListType) => {
-    console.log(product);
     selectProduct(product);
   };
 
@@ -43,7 +49,7 @@ export default function ProductList() {
 
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="form-input mt-2 px-0! md:px-8!">
@@ -129,6 +135,29 @@ export default function ProductList() {
               </tr>
             )}
           </tbody>
+          <tfoot className="border-t">
+            <tr>
+              <td colSpan={5}>
+                <div className="flex bg-gray-100 gap-2 py-2 items-center justify-center">
+                  <button
+                    className="rounded-full border p-2 bg-blue-400"
+                    type="button"
+                    onClick={() => handleChangeCurrentPage(false)}
+                  >
+                    <ArrowLeft size={16} />
+                  </button>
+                  <span>{`${currentPage + 1} / ${allPage}`}</span>
+                  <button
+                    type="button"
+                    className="rounded-full border p-2 bg-blue-400"
+                    onClick={() => handleChangeCurrentPage(true)}
+                  >
+                    <ArrowRight size={16} />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>

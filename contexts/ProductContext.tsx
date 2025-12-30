@@ -6,18 +6,23 @@ import { errorAlert } from "@/utils/alertSwal";
 import { createContext, useContext, useState } from "react";
 
 interface ProductContextType {
+  currentPage: number;
+  allPage: number;
   productList: ProductListType[];
   addProductList: (newProduct: ProductListType) => void;
   fetchProduct: () => Promise<void>;
   selectProduct: (product: ProductListType) => void;
   selectedProduct: ProductListType | null;
   clearSelectedProduct: () => void;
+  handleChangeCurrentPage: (isNext: boolean) => void;
 }
 
 const ProductContext = createContext<ProductContextType | null>(null);
 
 export function ProductProvider({ children }: { children: React.ReactNode }) {
   const [productList, setProductList] = useState<ProductListType[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [allPage, setAllPage] = useState(0);
   const [selectedProduct, setSelectedProduct] =
     useState<ProductListType | null>(null);
   const addProductList = (newProduct: ProductListType) => {
@@ -61,10 +66,13 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
   };
   const fetchProduct = async () => {
     try {
-      const res = await getProducts();
+      const res = await getProducts(currentPage);
       const initList: ProductListType[] = [];
-      if (res.data && res.data?.length) {
-        res.data.forEach((item: ProductFetchType) => {
+      if (res.data?.productList && res.data?.productList?.length) {
+        if (res.data?.productCount) {
+          setAllPage(Math.ceil(res.data?.productCount / 7));
+        }
+        res.data?.productList.forEach((item: ProductFetchType) => {
           const newProductObj = {
             name: item.name,
             id: item.id,
@@ -86,15 +94,25 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
       errorAlert("Fetching data failure", err);
     }
   };
+  const handleChangeCurrentPage = (isNext: boolean) => {
+    if (isNext) {
+      setCurrentPage((prev) => (prev === allPage ? prev : prev + 1));
+    } else {
+      setCurrentPage((prev) => (prev === 0 ? prev : prev - 1));
+    }
+  };
   return (
     <ProductContext.Provider
       value={{
+        currentPage,
+        allPage,
         productList,
         addProductList,
         fetchProduct,
         selectProduct,
         selectedProduct,
         clearSelectedProduct,
+        handleChangeCurrentPage,
       }}
     >
       {children}

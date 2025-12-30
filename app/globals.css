@@ -59,7 +59,7 @@ input[type="number"] {
 }
 
 .qty-btn {
-  @apply cursor-pointer flex items-center justify-center rounded-full w-7 h-7 sm:w-6 sm:h-6;
+  @apply cursor-pointer flex items-center justify-center rounded-full w-9 h-9 sm:w-8 sm:h-8;
 }
 
 .badge {

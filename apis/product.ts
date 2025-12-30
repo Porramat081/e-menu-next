@@ -10,8 +10,11 @@ interface CreatedProductType {
   status: string;
 }
 
-export const getProducts = async () => {
+export const getProducts = async (startIndex?: number) => {
   const res = await axiosInstance.get("products/all", {
+    params: {
+      startIndex: startIndex || 0,
+    },
     withCredentials: true,
   });
   return res.data;

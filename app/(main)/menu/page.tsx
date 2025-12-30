@@ -13,9 +13,9 @@ export default function Page() {
   const fetchMenu = async () => {
     try {
       const res = await getProducts();
-      if (res.data) {
+      if (res.data.productList && Array.isArray(res.data.productList)) {
         setMenus(
-          (res.data as ProductFetchType[]).map((item) => ({
+          (res.data.productList as ProductFetchType[]).map((item) => ({
             id: item.id,
             imageUrl: item.images[0]?.downloadUrl?.substring(1),
             name: item.name,
